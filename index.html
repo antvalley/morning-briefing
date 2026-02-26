@@ -92,10 +92,12 @@
     }
 
     .news-item {
-      padding: 20px;
+      padding: 15px 20px;
       border-bottom: 1px solid #e5e7eb;
       cursor: pointer;
       transition: background 0.2s;
+      display: flex;
+      align-items: center;
     }
 
     .news-item:hover {
@@ -120,9 +122,10 @@
     }
 
     .news-title {
-      font-size: 18px;
+      font-size: 16px;
       color: #374151;
       display: inline;
+      line-height: 1.5;
     }
 
     .stock-grid {
@@ -314,10 +317,12 @@
         // TODO: API 연동
         const weatherData = {
           hourly: [
+            { time: '06시', temp: 1, condition: '🌙' },
             { time: '09시', temp: 3, condition: '☀️' },
             { time: '12시', temp: 7, condition: '☀️' },
             { time: '15시', temp: 8, condition: '⛅' },
-            { time: '18시', temp: 5, condition: '🌙' }
+            { time: '18시', temp: 5, condition: '🌙' },
+            { time: '21시', temp: 2, condition: '🌙' }
           ]
         };
 
