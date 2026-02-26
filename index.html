@@ -62,9 +62,9 @@
     .weather-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
-      gap: 4px;
+      gap: ３px;
       margin-top: 15px;
-      padding: 0 5px;
+      padding: 0 ８px;
     }}
 
     .weather-item {
@@ -90,10 +90,11 @@
 
     .news-list {
       list-style: none;
+      padding: 0 8px;
     }
 
     .news-item {
-      padding: 10px 15px;
+      padding: 10px ０px;
       border-bottom: 1px solid #e5e7eb;
       cursor: pointer;
       transition: background 0.2s;
@@ -358,16 +359,16 @@
       try {
         // TODO: API 연동
         const newsData = [
-          { title: '한국 경제 성장률 전망 상향 조정, 수출 호조 지속', link: '#' },
-          { title: '서울 부동산 시장 안정화, 거래량 증가세', link: '#' },
-          { title: '반도체 업계 실적 개선, 삼성전자 목표가 상향', link: '#' },
-          { title: 'AI 기술 발전으로 IT 산업 재편 가속화', link: '#' },
-          { title: '전기차 배터리 기술 혁신, 국내 업체 수주 확대', link: '#' },
-          { title: '금리 동결 전망 속 증시 상승 기대감 고조', link: '#' },
-          { title: 'K-콘텐츠 해외 진출 확대, 엔터주 강세', link: '#' },
-          { title: '바이오 신약 개발 성과, 제약사 주가 급등', link: '#' },
-          { title: '친환경 에너지 투자 확대, 관련주 주목', link: '#' },
-          { title: '글로벌 경기 회복세, 수출 기업 실적 개선 기대', link: '#' }
+          { title: '경제 성장률 전망 상향, 수출 호조', link: '#' },
+          { title: '서울 부동산 시장 안정화 추세', link: '#' },
+          { title: '반도체 실적 개선, 목표가 상향', link: '#' },
+          { title: 'AI 기술 발전으로 IT 산업 재편', link: '#' },
+          { title: '전기차 배터리 혁신, 수주 확대', link: '#' },
+          { title: '금리 동결 전망, 증시 상승 기대', link: '#' },
+          { title: 'K-콘텐츠 해외 진출 확대', link: '#' },
+          { title: '바이오 신약 성과, 제약사 급등', link: '#' },
+          { title: '친환경 에너지 투자, 관련주 주목', link: '#' },
+          { title: '글로벌 경기 회복, 실적 개선', link: '#' }
         ];
 
         const html = `
