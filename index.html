@@ -314,12 +314,8 @@
     // 날씨 정보 로드
     async function loadWeather() {
       try {
-        // TODO: API 연동
         const weatherData = {
           dust: '보통',
-          hourly: [
-            { time: '06시', temp: 1, condition: '🌙' },
-        const weatherData = {
           hourly: [
             { time: '06시', temp: 1, condition: '🌙' },
             { time: '09시', temp: 3, condition: '☀️' },
@@ -347,6 +343,7 @@
 
         document.getElementById('weatherSection').innerHTML = html;
       } catch (error) {
+        console.error('날씨 로드 오류:', error);
         document.getElementById('weatherSection').innerHTML = 
           '<p style="color: #ef4444;">날씨 정보를 불러올 수 없습니다.</p>';
       }
