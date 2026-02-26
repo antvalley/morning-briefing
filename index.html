@@ -91,12 +91,13 @@
     }
 
     .news-item {
-      padding: 15px 20px;
+      padding: 12px 15px;
       border-bottom: 1px solid #e5e7eb;
       cursor: pointer;
       transition: background 0.2s;
       display: flex;
       align-items: center;
+      gap: 8px;
     }
 
     .news-item:hover {
@@ -108,23 +109,25 @@
     }
 
     .news-number {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      min-width: 28px;
       background: #2563eb;
       color: white;
       border-radius: 50%;
-      text-align: center;
-      line-height: 30px;
+      font-size: 14px;
       font-weight: 600;
-      margin-right: 15px;
+      margin-right: 12px;
     }
 
     .news-title {
-      font-size: 16px;
+      font-size: 15px;
       color: #374151;
-      display: inline;
-      line-height: 1.5;
+      line-height: 1.4;
+      flex: 1;
     }
 
     .stock-grid {
