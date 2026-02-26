@@ -2,10 +2,461 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>모닝 브리핑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☀️ 모닝 브리핑</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .header .date {
+      font-size: 24px;
+      opacity: 0.9;
+    }
+
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .weather-item {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .weather-item .time {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .weather-item .temp {
+      font-size: 32px;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 10px 0;
+    }
+
+    .news-list {
+      list-style: none;
+    }
+
+    .news-item {
+      padding: 20px;
+      border-bottom: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .news-item:hover {
+      background: #f9fafb;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      background: #2563eb;
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 30px;
+      font-weight: 600;
+      margin-right: 15px;
+    }
+
+    .news-title {
+      font-size: 18px;
+      color: #374151;
+      display: inline;
+    }
+
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .stock-item {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stock-name {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .stock-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .stock-change {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .up {
+      color: #ef4444;
+    }
+
+    .down {
+      color: #3b82f6;
+    }
+
+    .currency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .currency-item {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .currency-name {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .currency-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .refresh-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+
+    .refresh-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .refresh-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
 </head>
 <body>
-  <h1>☀️ 모닝 브리핑</h1>
-  <p>준비 중...</p>
+  <div class="container">
+    <!-- 헤더 -->
+    <div class="header">
+      <h1>☀️ 모닝 브리핑</h1>
+      <div class="date" id="currentDate"></div>
+    </div>
+
+    <!-- 날씨 & 미세먼지 -->
+    <div class="section">
+      <div class="section-title">🌤️ 오늘의 날씨 & 미세먼지</div>
+      <div id="weatherSection" class="loading">
+        <div class="spinner"></div>
+        <p>날씨 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- 주요 뉴스 -->
+    <div class="section">
+      <div class="section-title">📰 주요 뉴스 TOP 10</div>
+      <div id="newsSection" class="loading">
+        <div class="spinner"></div>
+        <p>뉴스를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- 국내 증시 -->
+    <div class="section">
+      <div class="section-title">📈 국내 증시 현황</div>
+      <div id="stockSection" class="loading">
+        <div class="spinner"></div>
+        <p>증시 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- 환율 -->
+    <div class="section">
+      <div class="section-title">💱 환율 정보</div>
+      <div id="currencySection" class="loading">
+        <div class="spinner"></div>
+        <p>환율 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- 새로고침 버튼 -->
+    <button class="refresh-btn" onclick="loadAllData()">🔄</button>
+  </div>
+
+  <script>
+    // Apps Script API URL (나중에 입력)
+    const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+    // 현재 날짜 표시
+    function updateDate() {
+      const now = new Date();
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        weekday: 'long' 
+      };
+      document.getElementById('currentDate').textContent = 
+        now.toLocaleDateString('ko-KR', options);
+    }
+
+    // 모든 데이터 로드
+    async function loadAllData() {
+      updateDate();
+      loadWeather();
+      loadNews();
+      loadStock();
+      loadCurrency();
+    }
+
+    // 날씨 정보 로드
+    async function loadWeather() {
+      try {
+        // TODO: API 연동
+        const weatherData = {
+          current: { temp: 5, condition: '맑음', dust: '보통' },
+          hourly: [
+            { time: '09시', temp: 3, condition: '☀️' },
+            { time: '12시', temp: 7, condition: '☀️' },
+            { time: '15시', temp: 8, condition: '⛅' },
+            { time: '18시', temp: 5, condition: '🌙' }
+          ]
+        };
+
+        const html = `
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 48px; margin-bottom: 10px;">${weatherData.current.condition}</div>
+            <div style="font-size: 36px; font-weight: 700; color: #2563eb;">${weatherData.current.temp}°C</div>
+            <div style="font-size: 18px; color: #6b7280; margin-top: 10px;">미세먼지: ${weatherData.current.dust}</div>
+          </div>
+          <div class="weather-grid">
+            ${weatherData.hourly.map(item => `
+              <div class="weather-item">
+                <div class="time">${item.time}</div>
+                <div style="font-size: 32px;">${item.condition}</div>
+                <div class="temp">${item.temp}°C</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('weatherSection').innerHTML = html;
+      } catch (error) {
+        document.getElementById('weatherSection').innerHTML = 
+          '<p style="color: #ef4444;">날씨 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    // 뉴스 로드
+    async function loadNews() {
+      try {
+        // TODO: API 연동
+        const newsData = [
+          { title: '주요 뉴스 제목 1', link: '#' },
+          { title: '주요 뉴스 제목 2', link: '#' },
+          { title: '주요 뉴스 제목 3', link: '#' },
+          { title: '주요 뉴스 제목 4', link: '#' },
+          { title: '주요 뉴스 제목 5', link: '#' },
+          { title: '주요 뉴스 제목 6', link: '#' },
+          { title: '주요 뉴스 제목 7', link: '#' },
+          { title: '주요 뉴스 제목 8', link: '#' },
+          { title: '주요 뉴스 제목 9', link: '#' },
+          { title: '주요 뉴스 제목 10', link: '#' }
+        ];
+
+        const html = `
+          <ul class="news-list">
+            ${newsData.map((news, index) => `
+              <li class="news-item" onclick="window.open('${news.link}', '_blank')">
+                <span class="news-number">${index + 1}</span>
+                <span class="news-title">${news.title}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+
+        document.getElementById('newsSection').innerHTML = html;
+      } catch (error) {
+        document.getElementById('newsSection').innerHTML = 
+          '<p style="color: #ef4444;">뉴스를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    // 증시 정보 로드
+    async function loadStock() {
+      try {
+        // TODO: API 연동
+        const stockData = {
+          kospi: { value: 2500, change: 15.5 },
+          sectors: [
+            { name: '반도체', value: 145000, change: 2.3 },
+            { name: '자동차', value: 98000, change: -1.2 },
+            { name: '조선/에너지', value: 125000, change: 3.1 },
+            { name: '방산', value: 78000, change: 1.8 },
+            { name: '화학/소재', value: 52000, change: -0.5 },
+            { name: '금융', value: 65000, change: 0.8 },
+            { name: '인터넷/플랫폼', value: 135000, change: 4.2 },
+            { name: '바이오/헬스', value: 89000, change: -2.1 },
+            { name: 'K-컬처', value: 112000, change: 5.5 }
+          ]
+        };
+
+        const html = `
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 20px; font-weight: 600; color: #374151; margin-bottom: 10px;">KOSPI</div>
+            <div style="font-size: 42px; font-weight: 700; color: #2563eb;">${stockData.kospi.value.toLocaleString()}</div>
+            <div style="font-size: 20px; font-weight: 600; color: ${stockData.kospi.change >= 0 ? '#ef4444' : '#3b82f6'};">
+              ${stockData.kospi.change >= 0 ? '▲' : '▼'} ${Math.abs(stockData.kospi.change)} (${(Math.abs(stockData.kospi.change) / stockData.kospi.value * 100).toFixed(2)}%)
+            </div>
+          </div>
+          <div class="stock-grid">
+            ${stockData.sectors.map(sector => `
+              <div class="stock-item">
+                <div class="stock-name">${sector.name}</div>
+                <div class="stock-value">${sector.value.toLocaleString()}</div>
+                <div class="stock-change ${sector.change >= 0 ? 'up' : 'down'}">
+                  ${sector.change >= 0 ? '▲' : '▼'} ${Math.abs(sector.change)}%
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('stockSection').innerHTML = html;
+      } catch (error) {
+        document.getElementById('stockSection').innerHTML = 
+          '<p style="color: #ef4444;">증시 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    // 환율 정보 로드
+    async function loadCurrency() {
+      try {
+        // TODO: API 연동
+        const currencyData = [
+          { name: 'USD', value: 1320.50 },
+          { name: 'JPY (100엔)', value: 890.30 },
+          { name: 'EUR', value: 1425.80 },
+          { name: 'CNY', value: 183.20 }
+        ];
+
+        const html = `
+          <div class="currency-grid">
+            ${currencyData.map(currency => `
+              <div class="currency-item">
+                <div class="currency-name">${currency.name}</div>
+                <div class="currency-value">${currency.value.toLocaleString()}원</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('currencySection').innerHTML = html;
+      } catch (error) {
+        document.getElementById('currencySection').innerHTML = 
+          '<p style="color: #ef4444;">환율 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    // 페이지 로드 시 실행
+    window.onload = loadAllData;
+  </script>
 </body>
 </html>
