@@ -59,32 +59,31 @@
     }
 
     .weather-grid {
-      display: flex;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
       margin-top: 20px;
-      overflow-x: auto;
-    }
+    }}
 
     .weather-item {
       background: #f9fafb;
-      border-radius: 12px;
-      padding: 15px;
+      border-radius: 8px;
+      padding: 10px 5px;
       text-align: center;
-      min-width: 80px;
-      flex-shrink: 0;
     }
 
     .weather-item .time {
       font-weight: 600;
       color: #374151;
-      margin-bottom: 10px;
+      font-size: 13px;
+      margin-bottom: 5px;
     }
 
     .weather-item .temp {
-      font-size: 24px;
+      font-size: 18px;
       font-weight: 700;
       color: #2563eb;
-      margin: 5px 0;
+      margin: 3px 0;
     }
 
     .news-list {
@@ -334,7 +333,7 @@
             ${weatherData.hourly.map(item => `
               <div class="weather-item">
                 <div class="time">${item.time}</div>
-                <div style="font-size: 32px;">${item.condition}</div>
+                <div style="font-size: 24px;">${item.condition}</div>
                 <div class="temp">${item.temp}°C</div>
               </div>
             `).join('')}
