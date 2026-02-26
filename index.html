@@ -59,17 +59,19 @@
     }
 
     .weather-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
+      display: flex;
+      gap: 10px;
       margin-top: 20px;
+      overflow-x: auto;
     }
 
     .weather-item {
       background: #f9fafb;
       border-radius: 12px;
-      padding: 20px;
+      padding: 15px;
       text-align: center;
+      min-width: 80px;
+      flex-shrink: 0;
     }
 
     .weather-item .time {
@@ -79,10 +81,10 @@
     }
 
     .weather-item .temp {
-      font-size: 32px;
+      font-size: 24px;
       font-weight: 700;
       color: #2563eb;
-      margin: 10px 0;
+      margin: 5px 0;
     }
 
     .news-list {
