@@ -292,8 +292,7 @@
 
   <script>
     // Apps Script API URL (나중에 입력)
-    const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
-
+const API_URL = 'https://script.google.com/macros/s/AKfycbyFCvijPzrfqVXkdYcuvpsXTWXN6XoNNh0eQALP7ZaJeoibGc-gnVUDmP9zx6eFzLoN/exec';
     // 현재 날짜 표시
     function updateDate() {
       const now = new Date();
@@ -319,9 +318,42 @@
     // 날씨 정보 로드
     async function loadWeather() {
       try {
-        const weatherData = {
-          dust: '보통',
-          hourly: [
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getWeather' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const weatherData = result.data;
+
+        const html = `
+          <div style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #6b7280; padding: 0 10px;">
+            미세먼지: <strong style="color: #2563eb;">${weatherData.dust}</strong>
+          </div>
+          <div class="weather-grid">
+            ${weatherData.hourly.map(item => `
+              <div class="weather-item">
+                <div class="time">${item.time}</div>
+                <div style="font-size: 24px;">${item.condition}</div>
+                <div class="temp">${item.temp}°C</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('weatherSection').innerHTML = html;
+      } catch (error) {
+        console.error('날씨 로드 오류:', error);
+        document.getElementById('weatherSection').innerHTML = 
+          '<p style="color: #ef4444;">날씨 정보를 불러올 수 없습니다.</p>';
+      }
+    }
             { time: '06시', temp: 1, condition: '🌙' },
             { time: '09시', temp: 3, condition: '☀️' },
             { time: '12시', temp: 7, condition: '☀️' },
@@ -357,8 +389,38 @@
     // 뉴스 로드
     async function loadNews() {
       try {
-        // TODO: API 연동
-        const newsData = [
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getNews' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const newsData = result.data;
+
+        const html = `
+          <ul class="news-list">
+            ${newsData.map((news, index) => `
+              <li class="news-item" onclick="window.open('${news.link}', '_blank')">
+                <span class="news-number">${index + 1}</span>
+                <span class="news-title">${news.title}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+
+        document.getElementById('newsSection').innerHTML = html;
+      } catch (error) {
+        console.error('뉴스 로드 오류:', error);
+        document.getElementById('newsSection').innerHTML = 
+          '<p style="color: #ef4444;">뉴스를 불러올 수 없습니다.</p>';
+      }
+    }
           { title: '경제 성장률 전망 상향, 수출 호조', link: '#' },
           { title: '서울 부동산 시장 안정화 추세', link: '#' },
           { title: '반도체 실적 개선, 목표가 상향', link: '#' },
@@ -392,8 +454,48 @@
     // 증시 정보 로드
     async function loadStock() {
       try {
-        // TODO: API 연동
-        const stockData = {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getStock' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const stockData = result.data;
+
+        const html = `
+          <div style="text-align: center; margin-bottom: 30px;">
+            <div style="font-size: 20px; font-weight: 600; color: #374151; margin-bottom: 10px;">KOSPI</div>
+            <div style="font-size: 42px; font-weight: 700; color: #2563eb;">${stockData.kospi.value.toLocaleString()}</div>
+            <div style="font-size: 20px; font-weight: 600; color: ${stockData.kospi.change >= 0 ? '#ef4444' : '#3b82f6'};">
+              ${stockData.kospi.change >= 0 ? '▲' : '▼'} ${Math.abs(stockData.kospi.change)} (${(Math.abs(stockData.kospi.change) / stockData.kospi.value * 100).toFixed(2)}%)
+            </div>
+          </div>
+          <div class="stock-grid">
+            ${stockData.sectors.map(sector => `
+              <div class="stock-item">
+                <div class="stock-name">${sector.name}</div>
+                <div class="stock-value">${sector.value.toLocaleString()}</div>
+                <div class="stock-change ${sector.change >= 0 ? 'up' : 'down'}">
+                  ${sector.change >= 0 ? '▲' : '▼'} ${Math.abs(sector.change)}%
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('stockSection').innerHTML = html;
+      } catch (error) {
+        console.error('증시 로드 오류:', error);
+        document.getElementById('stockSection').innerHTML = 
+          '<p style="color: #ef4444;">증시 정보를 불러올 수 없습니다.</p>';
+      }
+    }
           kospi: { value: 2500, change: 15.5 },
           sectors: [
             { name: '반도체', value: 145000, change: 2.3 },
@@ -439,8 +541,38 @@
     // 환율 정보 로드
     async function loadCurrency() {
       try {
-        // TODO: API 연동
-        const currencyData = [
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getCurrency' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const currencyData = result.data;
+
+        const html = `
+          <div class="currency-grid">
+            ${currencyData.map(currency => `
+              <div class="currency-item">
+                <div class="currency-name">${currency.name}</div>
+                <div class="currency-value">${currency.value.toLocaleString()}원</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('currencySection').innerHTML = html;
+      } catch (error) {
+        console.error('환율 로드 오류:', error);
+        document.getElementById('currencySection').innerHTML = 
+          '<p style="color: #ef4444;">환율 정보를 불러올 수 없습니다.</p>';
+      }
+    }
           { name: 'USD', value: 1320.50 },
           { name: 'JPY (100엔)', value: 890.30 },
           { name: 'EUR', value: 1425.80 },
