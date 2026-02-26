@@ -43,16 +43,17 @@
     .section {
       background: white;
       border-radius: 20px;
-      padding: 15px 8px;
+      padding: 15px ０px;
       margin-bottom: 20px;
       box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     }}
 
     .section-title {
-      font-size: 22px;
+      font-size: 26px;
       font-weight: 700;
       color: #2563eb;
       margin-bottom: 20px;
+      padding: 0 15px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -63,6 +64,7 @@
       grid-template-columns: repeat(6, 1fr);
       gap: 4px;
       margin-top: 15px;
+      padding: 0 5px;
     }}
 
     .weather-item {
@@ -91,7 +93,7 @@
     }
 
     .news-item {
-      padding: 10px 8px;
+      padding: 10px 15px;
       border-bottom: 1px solid #e5e7eb;
       cursor: pointer;
       transition: background 0.2s;
@@ -329,7 +331,7 @@
         };
 
         const html = `
-          <div style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #6b7280;">
+          <div style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #6b7280; padding: 0 10px;">
             미세먼지: <strong style="color: #2563eb;">${weatherData.dust}</strong>
           </div>
           <div class="weather-grid">
