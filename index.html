@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>☀️ 모닝 브리핑</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: white;
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .header .date {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .section {
+      background: white;
+      border-radius: 20px;
+      padding: 15px 0;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #2563eb;
+      margin-bottom: 20px;
+      padding: 0 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 3px;
+      margin-top: 15px;
+      padding: 0 5px;
+    }
+
+    .weather-item {
+      background: #f9fafb;
+      border-radius: 6px;
+      padding: 8px 2px;
+      text-align: center;
+    }
+
+    .weather-item .time {
+      font-weight: 600;
+      color: #374151;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .weather-item .temp {
+      font-size: 18px;
+      font-weight: 700;
+      color: #2563eb;
+      margin: 3px 0;
+    }
+
+    .news-list {
+      list-style: none;
+      padding: 0 15px;
+    }
+
+    .news-item {
+      padding: 10px 5px;
+      border-bottom: 1px solid #e5e7eb;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .news-item:hover {
+      background: #f9fafb;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      background: #2563eb;
+      color: white;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .news-title {
+      font-size: 14px;
+      color: #374151;
+      line-height: 1.3;
+      flex: 1;
+    }
+
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      padding: 0 15px;
+    }
+
+    .stock-item {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .stock-name {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .stock-value {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+
+    .stock-change {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .up {
+      color: #ef4444;
+    }
+
+    .down {
+      color: #3b82f6;
+    }
+
+    .currency-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      padding: 0 15px;
+    }
+
+    .currency-item {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .currency-name {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 10px;
+    }
+
+    .currency-value {
+      font-size: 24px;
+      font-weight: 700;
+      color: #2563eb;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+
+    .spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #2563eb;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .refresh-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: all 0.3s;
+    }
+
+    .refresh-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .refresh-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>☀️ 모닝 브리핑</h1>
+      <div class="date" id="currentDate"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🌤️ 오늘의 날씨 & 미세먼지</div>
+      <div id="weatherSection" class="loading">
+        <div class="spinner"></div>
+        <p>날씨 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📰 주요 뉴스 TOP 10</div>
+      <div id="newsSection" class="loading">
+        <div class="spinner"></div>
+        <p>뉴스를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📈 국내 증시 현황</div>
+      <div id="stockSection" class="loading">
+        <div class="spinner"></div>
+        <p>증시 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">💱 환율 정보</div>
+      <div id="currencySection" class="loading">
+        <div class="spinner"></div>
+        <p>환율 정보를 불러오는 중...</p>
+      </div>
+    </div>
+
+    <button class="refresh-btn" onclick="loadAllData()">🔄</button>
+  </div>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyFCvijPzrfqVXkdYcuvpsXTWXN6XoNNh0eQALP7ZaJeoibGc-gnVUDmP9zx6eFzLoN/exec';
+
+    function updateDate() {
+      const now = new Date();
+      const options = { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        weekday: 'long' 
+      };
+      document.getElementById('currentDate').textContent = 
+        now.toLocaleDateString('ko-KR', options);
+    }
+
+    async function loadAllData() {
+      updateDate();
+      loadWeather();
+      loadNews();
+      loadStock();
+      loadCurrency();
+    }
+
+    async function loadWeather() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getWeather' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const weatherData = result.data;
+        const html = `
+          <div style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #6b7280; padding: 0 10px;">
+            미세먼지: <strong style="color: #2563eb;">${weatherData.dust}</strong>
+          </div>
+          <div class="weather-grid">
+            ${weatherData.hourly.map(item => `
+              <div class="weather-item">
+                <div class="time">${item.time}</div>
+                <div style="font-size: 24px;">${item.condition}</div>
+                <div class="temp">${item.temp}°C</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        document.getElementById('weatherSection').innerHTML = html;
+      } catch (error) {
+        console.error('날씨 로드 오류:', error);
+        document.getElementById('weatherSection').innerHTML = 
+          '<p style="color: #ef4444;">날씨 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    async function loadNews() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getNews' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const newsData = result.data;
+        const html = `
+          <ul class="news-list">
+            ${newsData.map((news, index) => `
+              <li class="news-item" onclick="window.open('${news.link}', '_blank')">
+                <span class="news-number">${index + 1}</span>
+                <span class="news-title">${news.title}</span>
+              </li>
+            `).join('')}
+          </ul>
+        `;
+
+        document.getElementById('newsSection').innerHTML = html;
+      } catch (error) {
+        console.error('뉴스 로드 오류:', error);
+        document.getElementById('newsSection').innerHTML = 
+          '<p style="color: #ef4444;">뉴스를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    async function loadStock() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getStock' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const stockData = result.data;
+        const html = `
+          <div style="text-align: center; margin-bottom: 30px; padding: 0 15px;">
+            <div style="font-size: 20px; font-weight: 600; color: #374151; margin-bottom: 10px;">KOSPI</div>
+            <div style="font-size: 42px; font-weight: 700; color: #2563eb;">${stockData.kospi.value.toLocaleString()}</div>
+            <div style="font-size: 20px; font-weight: 600; color: ${stockData.kospi.change >= 0 ? '#ef4444' : '#3b82f6'};">
+              ${stockData.kospi.change >= 0 ? '▲' : '▼'} ${Math.abs(stockData.kospi.change)} (${(Math.abs(stockData.kospi.change) / stockData.kospi.value * 100).toFixed(2)}%)
+            </div>
+          </div>
+          <div class="stock-grid">
+            ${stockData.sectors.map(sector => `
+              <div class="stock-item">
+                <div class="stock-name">${sector.name}</div>
+                <div class="stock-value">${sector.value.toLocaleString()}</div>
+                <div class="stock-change ${sector.change >= 0 ? 'up' : 'down'}">
+                  ${sector.change >= 0 ? '▲' : '▼'} ${Math.abs(sector.change)}%
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('stockSection').innerHTML = html;
+      } catch (error) {
+        console.error('증시 로드 오류:', error);
+        document.getElementById('stockSection').innerHTML = 
+          '<p style="color: #ef4444;">증시 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    async function loadCurrency() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'getCurrency' })
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+        
+        const currencyData = result.data;
+        const html = `
+          <div class="currency-grid">
+            ${currencyData.map(currency => `
+              <div class="currency-item">
+                <div class="currency-name">${currency.name}</div>
+                <div class="currency-value">${currency.value.toLocaleString()}원</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+
+        document.getElementById('currencySection').innerHTML = html;
+      } catch (error) {
+        console.error('환율 로드 오류:', error);
+        document.getElementById('currencySection').innerHTML = 
+          '<p style="color: #ef4444;">환율 정보를 불러올 수 없습니다.</p>';
+      }
+    }
+
+    window.onload = loadAllData;
+  </script>
+</body>
+</html>
