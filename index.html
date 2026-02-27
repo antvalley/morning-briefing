@@ -355,29 +355,6 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyFCvijPzrfqVXkdYcuvpsX
       }
     }
 
-        const html = `
-          <div style="text-align: center; margin-bottom: 15px; font-size: 16px; color: #6b7280; padding: 0 10px;">
-            미세먼지: <strong style="color: #2563eb;">${weatherData.dust}</strong>
-          </div>
-          <div class="weather-grid">
-            ${weatherData.hourly.map(item => `
-              <div class="weather-item">
-                <div class="time">${item.time}</div>
-                <div style="font-size: 24px;">${item.condition}</div>
-                <div class="temp">${item.temp}°C</div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-
-        document.getElementById('weatherSection').innerHTML = html;
-      } catch (error) {
-        console.error('날씨 로드 오류:', error);
-        document.getElementById('weatherSection').innerHTML = 
-          '<p style="color: #ef4444;">날씨 정보를 불러올 수 없습니다.</p>';
-      }
-    }
-
     // 뉴스 로드
     async function loadNews() {
       try {
